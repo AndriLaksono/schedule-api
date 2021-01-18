@@ -5,13 +5,12 @@ import { ScheduleServices } from './services.schedule';
 const services = new ScheduleServices();
 
 export class ScheduleController {
-
     async getSchedule(req: Request, res: Response, next: NextFunction) {
         try {
             const result = await services.getSchedule();
             return res.json({
-                message: "Success get data",
-                data: result
+                message: 'Success get data',
+                data: result,
             });
         } catch (error) {
             next(error);
@@ -23,13 +22,13 @@ export class ScheduleController {
             const result = await services.getScheduleById(+req.params.id);
             if (result.length > 0) {
                 return res.json({
-                    message: "Success get data",
-                    data: result[0]
+                    message: 'Success get data',
+                    data: result[0],
                 });
             }
             return res.json({
-                message: "Data not found",
-                data: null
+                message: 'Data not found',
+                data: null,
             });
         } catch (error) {
             next(error);
@@ -37,7 +36,7 @@ export class ScheduleController {
     }
 
     /**
-     * 
+     *
      * @param req Express Request
      * @param res Express Response
      * @param next Callback if Errors
@@ -56,20 +55,22 @@ export class ScheduleController {
             const check = await services.checkAvabilitySchedule(data.date, data.start_time, data.end_time);
             if (check[0].length > 0) {
                 return res.status(400).json({
-                    message: "The schedule already exists"
+                    message: 'The schedule already exists',
                 });
             }
-            
+
             // insert if all cases passed
             await services.insertSchedule(data);
 
             return res.json({
-                message: "Data Created"
+                message: 'Data Created',
             });
         } catch (error) {
-            next(new HttpExpection(400, {
-                message: "Error format input"
-            }));
+            next(
+                new HttpExpection(400, {
+                    message: 'Error format input',
+                }),
+            );
         }
     }
 
@@ -91,10 +92,15 @@ export class ScheduleController {
             };
 
             // check avability except this day
-            const checkAvability = await services.checkAvabilityScheduleExceptId(+id, data.date, data.start_time, data.end_time);
+            const checkAvability = await services.checkAvabilityScheduleExceptId(
+                +id,
+                data.date,
+                data.start_time,
+                data.end_time,
+            );
             if (checkAvability[0].length > 0) {
                 return res.status(400).json({
-                    message: "The schedule already exists"
+                    message: 'The schedule already exists',
                 });
             }
 
@@ -102,14 +108,14 @@ export class ScheduleController {
             const checkPublish = await services.checkPublishedSchedule(+id);
             if (checkPublish.length > 0) {
                 return res.status(400).json({
-                    message: "Can't update a published schedule."
-                })
+                    message: "Can't update a published schedule.",
+                });
             }
 
             // update if all cases passed
             await services.updateScheduleById(+id, data);
             return res.json({
-                message: "Data Updated"
+                message: 'Data Updated',
             });
         } catch (error) {
             next(error);
@@ -128,15 +134,15 @@ export class ScheduleController {
             // check schedule is publish
             const id = req.params.id;
             const checkPublish = await services.checkPublishedSchedule(+id);
-            
+
             if (checkPublish.length > 0) {
                 return res.status(400).json({
-                    message: "Can't delete a published schedule."
-                })
+                    message: "Can't delete a published schedule.",
+                });
             }
             await services.deleteScheduleById(+id);
             return res.json({
-                message: "Success delete data",
+                message: 'Success delete data',
             });
         } catch (error) {
             next(error);
@@ -154,11 +160,10 @@ export class ScheduleController {
         try {
             await services.publishScheduleById(+req.params.id);
             return res.json({
-                message: "Schedule Published!",
+                message: 'Schedule Published!',
             });
         } catch (error) {
             next(error);
         }
     }
-    
 }

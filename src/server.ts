@@ -8,5 +8,5 @@ const app = express();
 loaderApp(app);
 
 app.listen(config.app.PORT as number, config.app.HOST, () => {
-  console.log(`Server listen on PORT ${config.app.PORT}`);
+    console.log(`Server listen on PORT ${config.app.PORT}`);
 });

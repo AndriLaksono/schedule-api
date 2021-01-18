@@ -1,18 +1,12 @@
+"use strict";
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-export interface HttpData {
-    message: string;
-    data?: any;
-}
+Object.defineProperty(exports, "__esModule", { value: true });
 class HttpExpection extends Error {
-    statusCode: number;
-    data: any[];
-    constructor(statusCode: number, httpData: HttpData) {
+    constructor(statusCode, httpData) {
         super(httpData.message);
         this.name = 'HttpExpection';
         this.statusCode = statusCode;
         this.data = httpData.data || null;
     }
 }
-
-export default HttpExpection;
+exports.default = HttpExpection;
